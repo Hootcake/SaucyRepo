@@ -1,18 +1,29 @@
-import { Page, Locator, expect } from '@playwright/test';
-import { LoginPage } from './LoginPage';
+import { Page, Locator } from '@playwright/test';
 
 export class InventoryPage{
-    readonly addToCartButton: Locator; 
+    readonly addItemToCartButton: Locator; 
     readonly removeButton: Locator;
     readonly cartCounter: Locator;
+    readonly goToCartButton: Locator; 
+
     constructor(private page: Page){
-        this.addToCartButton = page.locator('#add-to-cart-sauce-labs-backpack');
+        this.addItemToCartButton = page.locator('#add-to-cart-sauce-labs-backpack');
         this.removeButton = page.getByRole('button', {name: 'Remove'});
         this.cartCounter = page.locator('[data-test="shopping-cart-badge"]');
+        this.goToCartButton = page.locator('[data-test="shopping-cart-link"]')
     };
 
-    async addItem(){
-        await this.addToCartButton.click();
-        await expect(this.cartCounter).toHaveText('1');
+    async addSingularItemToCart(){
+        // Click the "Add to Cart" button for the first item
+        await this.addItemToCartButton.click();
+    }
+
+    async getCartCount(): Promise<string | null>{
+        return this.cartCounter.textContent();
+    }
+
+    //Not huge on this as it's shared. Lets look at a shared NavBar component later.
+    async clickCartButton(){
+        await this.goToCartButton.click();
     }
 }

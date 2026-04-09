@@ -23,8 +23,8 @@ export class LoginPage {
     await this.loginButton.click();
   }
 
-  async invalidPassword(){
-    await expect(this.errorMessage).toHaveText('Epic sadface: Username and password do not match any user in this service');
+  async getErrorMessage(): Promise<string | null>{
+    return this.errorMessage.textContent();
   }
 }
 
